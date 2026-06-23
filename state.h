@@ -32,6 +32,7 @@ public:
   // const Vector2* get_anchors_vec2() const;
 
   void add_anchor(const Anchor &anchor);
+  void add_anchor_force(const Anchor &anchor);
 private:
   static size_t m_index;
   size_t m_id;
@@ -47,7 +48,7 @@ public:
   std::optional<Stroke> get_stroke(size_t index) const;
   void create_stroke(const Anchor &first_anchor);
   void add_anchor(const Anchor &anchor);
-  void stop_stroke();
+  void stop_stroke(const Anchor &anchor);
 private:
   std::vector<Stroke> m_strokes;
   Stroke* m_current_stroke;

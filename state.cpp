@@ -1,4 +1,6 @@
 #include "state.h"
+#include <cmath>
+#include <iterator>
 #include <optional>
 #include <raylib.h>
 #include <vector>
@@ -16,11 +18,15 @@ Stroke::Stroke(const Anchor &first_anchor)
 size_t Stroke::get_id() const { return m_id; }
 Color Stroke::get_color() const { return m_color; }
 const std::vector<Anchor> Stroke::get_anchors() const { return m_anchors; }
-// const Vector2 *get_anchors_vec2() const {
-//   std::array<Vector2, m_anchors.size()> anchors{};
-//   for ()
-// }
-void Stroke::add_anchor(const Anchor &anchor) { m_anchors.emplace_back(anchor); }
+void Stroke::add_anchor(const Anchor &anchor) {
+  const Anchor &latest_anchor = m_anchors.back();
+  auto dist{std::hypotf(anchor.x - latest_anchor.x, anchor.y - latest_anchor.y)};
+  if (dist > App_state::config.brush_size/2)
+	m_anchors.emplace_back(anchor);
+}
+void Stroke::add_anchor_force(const Anchor &anchor) {
+  m_anchors.emplace_back(anchor);
+}
 size_t Stroke::m_index{0};
 
 App_state::App_state() : m_current_stroke(nullptr) {}
@@ -40,6 +46,7 @@ void App_state::add_anchor(const Anchor &anchor) {
   }
   m_current_stroke->add_anchor(anchor);
 }
-void App_state::stop_stroke() {
+void App_state::stop_stroke(const Anchor &anchor) {
+  m_current_stroke->add_anchor_force(anchor);
   m_current_stroke = nullptr;
 }
