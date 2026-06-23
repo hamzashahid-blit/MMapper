@@ -9,7 +9,6 @@ void render(const App_state& app)
   const auto &strokes{app.get_strokes()};
   for (const auto &stroke : strokes) {
     const auto &anchors{stroke.get_anchors()};
-	std::cout << "Anchor count: " << anchors.size() << '\n';
 	DrawCircle(static_cast<int>(anchors.at(0).x), static_cast<int>(anchors.at(0).y),
 			   app.config.brush_size/2, stroke.get_color());
     for (auto i{0uz}; i < anchors.size() - 1; i++) {
@@ -39,7 +38,6 @@ void update(App_state& app)
   if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
     app.add_anchor(mouse_anchor);
   } else if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
-	app.add_anchor(mouse_anchor);
 	app.stop_stroke(mouse_anchor);
   }
 }
