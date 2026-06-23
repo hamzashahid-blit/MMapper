@@ -5,6 +5,8 @@
 #include <vector>
 
 struct Config {
+  constexpr static int window_width{800};
+  constexpr static int window_height{600};
   constexpr static Color bg_color{26, 26, 26, 255};
   constexpr static Color draw_color{245, 245, 245, 255};
   constexpr static size_t brush_size{40}; // diameter

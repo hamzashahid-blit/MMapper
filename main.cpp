@@ -48,7 +48,9 @@ int main(int argc, const char *argv[])
 {
   App_state app;
 
-  InitWindow(600, 800, "MMapper");
+  SetConfigFlags(FLAG_MSAA_4X_HINT);
+  InitWindow(app.config.window_width, app.config.window_height, "MMapper");
+  ToggleBorderlessWindowed();
   while (!WindowShouldClose()) {
 	update(app);
 	render(app);
