@@ -10,11 +10,6 @@ struct Config {
   constexpr static size_t brush_size{40}; // diameter
 };
 
-// struct Anchor {
-//   float x;
-//   float y;
-// };
-
 using Anchor = Vector2;
 
 class Stroke {
@@ -26,10 +21,9 @@ public:
   Stroke &operator=(const Stroke &stroke) = default;
   Stroke &operator=(Stroke &&stroke) = default;
   
-  size_t get_id() const;
-  Color get_color() const;
-  const std::vector<Anchor> get_anchors() const;
-  // const Vector2* get_anchors_vec2() const;
+  [[nodiscard]] size_t get_id() const;
+  [[nodiscard]] Color get_color() const;
+  [[nodiscard]] const std::vector<Anchor> get_anchors() const;
 
   void add_anchor(const Anchor &anchor);
   void add_anchor_force(const Anchor &anchor);
@@ -44,8 +38,9 @@ class App_state {
 public:
   App_state();
   constexpr static Config config{};
-  std::vector<Stroke> get_strokes() const;
-  std::optional<Stroke> get_stroke(size_t index) const;
+  [[nodiscard]] const std::vector<Stroke> get_strokes() const;
+  [[nodiscard]] const std::optional<Stroke> get_stroke(size_t index) const;
+
   void create_stroke(const Anchor &first_anchor);
   void add_anchor(const Anchor &anchor);
   void stop_stroke(const Anchor &anchor);

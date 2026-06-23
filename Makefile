@@ -1,3 +1,3 @@
 all:
-	g++ -std=c++23 -Werror -pedantic -Wconversion main.cpp state.cpp -lm -lraylib
+	g++ -std=c++23 -g -Werror -pedantic -Wconversion main.cpp state.cpp -lm -lraylib
 

@@ -30,8 +30,8 @@ void Stroke::add_anchor_force(const Anchor &anchor) {
 size_t Stroke::m_index{0};
 
 App_state::App_state() : m_current_stroke(nullptr) {}
-std::vector<Stroke> App_state::get_strokes() const { return m_strokes; }
-std::optional<Stroke> App_state::get_stroke(size_t index) const {
+const std::vector<Stroke> App_state::get_strokes() const { return m_strokes; }
+const std::optional<Stroke> App_state::get_stroke(size_t index) const {
   if (index < m_strokes.size())
 	return m_strokes.at(index);
   return {};

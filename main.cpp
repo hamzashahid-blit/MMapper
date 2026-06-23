@@ -6,8 +6,9 @@ void render(const App_state& app)
 {
   BeginDrawing();
   ClearBackground(app.config.bg_color);
-  for (const auto &stroke : app.get_strokes()) {
-    auto &anchors{stroke.get_anchors()};
+  const auto &strokes{app.get_strokes()};
+  for (const auto &stroke : strokes) {
+    const auto &anchors{stroke.get_anchors()};
 	std::cout << "Anchor count: " << anchors.size() << '\n';
 	DrawCircle(static_cast<int>(anchors.at(0).x), static_cast<int>(anchors.at(0).y),
 			   app.config.brush_size/2, stroke.get_color());
@@ -20,21 +21,21 @@ void render(const App_state& app)
     }
   }
 
-  DrawCircle(10, 10, app.config.brush_size/2, app.config.draw_color);
-  DrawLineEx(Vector2{10, 10}, Vector2{100, 100}, app.config.brush_size,
-             app.config.draw_color);
-  DrawCircle(100, 100, app.config.brush_size/2, app.config.draw_color);
-  DrawLineEx(Vector2{100, 100}, Vector2{230, 80}, app.config.brush_size,
-             app.config.draw_color);
-  DrawCircle(230, 80, app.config.brush_size/2, app.config.draw_color);
+  if (!strokes.empty() && !strokes.back().get_anchors().empty()) {
+	if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
+	  DrawLineEx(strokes.back().get_anchors().back(), GetMousePosition(),
+				 app.config.brush_size, strokes.back().get_color());
+	}
+	DrawCircle(GetMouseX(), GetMouseY(),
+			   app.config.brush_size/2, strokes.back().get_color());
+  }
+  
   EndDrawing();
 }
 
 void update(App_state& app)
 {
-  const Anchor& mouse_anchor{
-        static_cast<float>(GetMouseX()),
-        static_cast<float>(GetMouseY())};
+  const Anchor& mouse_anchor{GetMousePosition()};
   if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
     app.add_anchor(mouse_anchor);
   } else if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
