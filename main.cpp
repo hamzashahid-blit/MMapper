@@ -3,22 +3,26 @@
 
 void render(const App_state& app)
 {
-  	BeginDrawing();
-	ClearBackground(app.config.bg_color);
-	for (const auto pixel : app.get_path()) {
-          DrawRectangle(static_cast<int>(pixel.first),
-                        static_cast<int>(pixel.second),
-                        app.config.pixel_width,
-                        app.config.pixel_height,
-                        app.config.draw_color);
+  BeginDrawing();
+  ClearBackground(app.config.bg_color);
+  for (const auto& stroke : app.get_strokes()) {
+	for (const auto& anchor : stroke.get_anchors()) {
+          DrawCircle(static_cast<int>(anchor.x), static_cast<int>(anchor.y),
+                     app.config.brush_size,
+                     stroke.get_color());
 	}
-	EndDrawing();
+  }
+  EndDrawing();
 }
 
 void update(App_state& app)
-{
+{ 
   if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
-	app.draw(GetMouseX(), GetMouseY());
+    app.add_anchor({
+        static_cast<size_t>(GetMouseX()),
+        static_cast<size_t>(GetMouseY())});
+  } else if (IsMouseButtonUp(MOUSE_BUTTON_LEFT)) {
+	app.stop_stroke();
   }
 }
 
